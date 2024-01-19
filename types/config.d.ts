@@ -4,7 +4,8 @@ interface Config {
     targetDir:string
     deployDir:string
     releaseDir:string
-    ssh:{
+    serverType:string
+    server:{
         host:string
         port:number
         username:string

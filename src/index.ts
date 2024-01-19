@@ -5,7 +5,7 @@ import add from './option/add'//添加配置
 import remove from './option/remove'
 import { list, listOnly } from './option/list'
 import chalk from 'chalk'
-import run from './option/run'
+import run from './common/selectRun'
 import select from './option/select'
 import edit from './option/edit'
 import editKey from './option/editKey'

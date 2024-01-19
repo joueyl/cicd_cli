@@ -31,10 +31,16 @@ export default async function edit(name:string,key?:string) {
               },
         },
         {
+            type: 'list',
+            name:'type',
+            message:'请选择服务器类型(Server type)',
+            choices:['ssh','ftp'],
+        },
+        {
             type: 'input',
             name: 'host',
             message: '请输入SSH地址(SSH address)',
-            default: config[currentConfig].ssh.host,
+            default: config[currentConfig].server.host,
             validate(input, answers) {
                 if(!input){
                     return '请输入SSH地址'
@@ -46,19 +52,19 @@ export default async function edit(name:string,key?:string) {
             type: 'input',
             name: 'port',
             message: '请输入SSH端口(默认22)(SSH Port default is 22)',
-            default: config[currentConfig].ssh.port,
+            default: config[currentConfig].server.port,
         },
         {
             type:'input',
             name:'username',
             message:'请输入服务器用户名(默认root)(User name default is root)',
-            default: config[currentConfig].ssh.username,
+            default: config[currentConfig].server.username,
         },
         {
             type:'password',
             name:'password',
             message:'请输入服务器密码(SSH Password)',
-            default: config[currentConfig].ssh.password,
+            default: config[currentConfig].server.password,
             validate(input, answers) {
                 if(!input){
                     return '请输入服务器密码'
@@ -103,12 +109,13 @@ export default async function edit(name:string,key?:string) {
     ])
     const inputRes:Config = {
         value: res.name,
-        ssh: {
+        server: {
             host: res.host,
             password: res.password,
             username: res.username || 'root',
             port: res.port ? Number(res.port) : 22
         },
+        serverType:res.type,
         releaseDir: res.releaseDir || res.name,
         name: res.name,
         targetDir: res.targetDir,

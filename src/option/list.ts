@@ -1,7 +1,7 @@
 import readConfig from "../common/readConfig";
 import tableLog from "../common/table";
 import chalk from "chalk";
-import run from "./run";
+import run from "./runSSH";
 export const list = () => {
     const config = readConfig();
     if (!config.length) {
