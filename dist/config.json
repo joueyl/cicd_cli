@@ -1,0 +1,1 @@
+[{"value":"cicd","ssh":{"host":"ca","password":"asd","username":"root","port":22},"releaseDir":"asd","name":"cicd","targetDir":"as","deployDir":"asd"}]
