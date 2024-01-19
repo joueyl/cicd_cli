@@ -59,7 +59,7 @@ export default async function add () {
         },{
             type:'input',
             name:'targetDir',
-            message:'本地项目打包文件夹(例:C:\\project)(The folder where the package file is located)',
+            message:'本地项目文件夹(例:C:\\project)(The folder where the package file is located)',
             validate(input, answers) {
                 if(!input){
                     return '本地项目打包文件夹(The folder where the package file is located)'

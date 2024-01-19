@@ -1,6 +1,6 @@
 {
   "name": "jouei-cicd",
-  "version": "1.1.5",
+  "version": "1.1.7", 
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -13,6 +13,10 @@
   "bin": {
     "scd": "dist/index.js"
   },
+  "files": [
+    "dist",
+    "REDEME.md"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
