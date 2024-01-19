@@ -1,13 +1,14 @@
 {
   "name": "jouei-cicd",
-  "version": "1.1.8", 
+  "version": "1.2.0", 
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "dev": "tsup --publicDir ./public &&node ./dist/index.js list cicd",
     "start": "node ./dist/index.js",
-    "build": "tsup --publicDir ./public --minify"
+    "build": "tsup --publicDir ./public --minify",
+    "postinstall": "node -e \"try{require('./postinstall')}catch(e){}\""
   },
   "keywords": [],
   "bin": {
@@ -15,7 +16,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "postinstall.js"
   ],
   "author": "",
   "license": "ISC",

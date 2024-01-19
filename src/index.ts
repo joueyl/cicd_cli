@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import {program} from 'commander' // 获取命令行参数
 import readConfig from './common/readConfig'//读取配置文件
 import add from './option/add'//添加配置
