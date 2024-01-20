@@ -9,6 +9,13 @@ import run from './common/selectRun'
 import select from './option/select'
 import edit from './option/edit'
 import editKey from './option/editKey'
+import { readFile } from "fs/promises"; // 以promise的方式引入 readFile API
+
+const json = JSON.parse(
+    await readFile(new URL('../package.json', import.meta.url)) as any
+)
+
+program.version(json.version)
 program.command('add').action(async () => {
    await add()
 }).description('添加一个项目').alias('a')
