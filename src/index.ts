@@ -10,6 +10,7 @@ import select from './option/select'
 import edit from './option/edit'
 import editKey from './option/editKey'
 import { readFile } from "fs/promises"; // 以promise的方式引入 readFile API
+import install from './option/install'
 
 const json = JSON.parse(
     await readFile(new URL('../package.json', import.meta.url)) as any
@@ -71,4 +72,8 @@ program.command('edit [name] [key]').action(async(name,key) => {
 program.command('help').action(() => {
     program.outputHelp()
 }).description('查看帮助').alias('h')
+program.command('install').action(async() => {
+    await install(process.cwd())
+    console.log(process.cwd())
+}).description('执行项目初始化').alias('i')
 program.parse(process.argv)

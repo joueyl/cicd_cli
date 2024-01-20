@@ -68,6 +68,7 @@ export default async function run(object: Config) {
   }
   try {
     await client.ensureDir(`${config.deployDir}${config.releaseDir}`);
+    await client.send('SITE CHMOD 777'+` ${config.deployDir}${config.releaseDir}`);
     await client.clearWorkingDir();
     await client.uploadFromDir(path.resolve(config.targetDir, "./dist"));
     bar.stop()
