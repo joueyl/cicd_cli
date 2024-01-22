@@ -11,13 +11,13 @@ import edit from './option/edit'
 import editKey from './option/editKey'
 import { readFile } from "fs/promises"; // 以promise的方式引入 readFile API
 import install from './option/install'
-
+import server from './common/server'
 const json = JSON.parse(
     await readFile(new URL('../package.json', import.meta.url)) as any
 )
 
 program.version(json.version)
-program.command('add').action(async () => {
+program.command('init').action(async () => {
    await add()
 }).description('添加一个项目').alias('a')
 program.command('remove [name]').action(async (name) => {
@@ -76,4 +76,7 @@ program.command('install').action(async() => {
     await install(process.cwd())
     console.log(process.cwd())
 }).description('执行项目初始化').alias('i')
+program.command('webUI').action(() => {
+    server()
+})
 program.parse(process.argv)

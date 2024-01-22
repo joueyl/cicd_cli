@@ -3,10 +3,12 @@ import readConfig from "../common/readConfig";
 import writeConfig from "../common/writeConfig";
 import tableLog from "../common/table";
 import chalk from "chalk";
+import readPackage from "../common/readPackage";
 /**
  * 添加配置
  */
 export default async function add() {
+  const packageJson = readPackage(process.cwd());
   const config = readConfig();
   const res = await inquirer.prompt([
     {
@@ -121,7 +123,6 @@ export default async function add() {
     targetDir: res.targetDir,
     deployDir: res.deployDir,
   };
-
   config.push(inputRes);
   writeConfig(config);
   console.log(chalk.green("添加成功"));
