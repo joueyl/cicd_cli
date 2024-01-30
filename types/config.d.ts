@@ -3,8 +3,8 @@ interface Config {
     value: string
     targetDir:string
     deployDir:string
-    releaseDir:string
     serverType:string
+    build:string
     server:{
         host:string
         port:number

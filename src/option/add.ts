@@ -4,11 +4,26 @@ import writeConfig from "../common/writeConfig";
 import tableLog from "../common/table";
 import chalk from "chalk";
 import readPackage from "../common/readPackage";
+import { resolve } from "path";
 /**
  * 添加配置
  */
 export default async function add() {
   const packageJson = readPackage(process.cwd());
+  //判断package里的scripts命令是否存在
+  if (!packageJson) {
+    console.log(
+      chalk.red("scd 🧐 未找到package.json,请在项目根目录执行此命令")
+    );
+    process.exit(0);
+  } else {
+    if (Object.keys(packageJson.scripts).length === 0) {
+      console.log(
+        chalk.red("scd 🧐 未找到package.json中的scripts项，无法执行此命令")
+      );
+      process.exit(0);
+    }
+  }
   const config = readConfig();
   const res = await inquirer.prompt([
     {
@@ -18,13 +33,22 @@ export default async function add() {
       validate: function (value) {
         // 使用正则表达式校验输入只包含英文字符
         if (/^[a-zA-Z0-9]+$/.test(value)) {
-          return true; // 输入符合要求，只包含英文字符
-        } else if (config.find((res) => res.name === value)) {
-          return "项目已存在(project already exists)";
+          if (config.find((res) => res.name === value)) {
+            return "项目已存在(project already exists)";
+          }
+          return true;
         } else {
           return "请输入英文字符(enter English characters)"; // 输入不符合要求，返回错误信息
         }
       },
+    },
+    {
+      type: "list",
+      name: "build",
+      message: `当前项目找到${
+        Object.keys(packageJson.scripts).length
+      }个运行命令，请选择要执行的打包命令`,
+      choices: Object.keys(packageJson.scripts),
     },
     {
       type: "list",
@@ -74,39 +98,18 @@ export default async function add() {
     },
     {
       type: "input",
-      name: "targetDir",
-      message:
-        "本地项目文件夹(例:C:\\project)(The folder where the package file is located)",
-      validate(input, answers) {
-        if (!input) {
-          return "本地项目打包文件夹(The folder where the package file is located)";
-        }
-        return true;
-      },
-      filter(input, answers) {
-        return input.replace(/\\/g, "/");
-      },
-    },
-    {
-      type: "input",
       name: "deployDir",
       message:
-        "远程部署目录(例:/home/www/)(The deployment directory on the server)",
+        "远程部署目录(例:/home/www/project)(The deployment directory on the server)",
       validate(input, answers) {
         if (!input) {
-          return "远程部署目录(例:/home/www/)(The deployment directory on the server)";
+          return "远程部署目录(例:/home/www/project)(The deployment directory on the server)";
         }
         return true;
       },
       filter(input, answers) {
         return input.replace(/\\/g, "/");
       },
-    },
-    {
-      type: "input",
-      name: "releaseDir",
-      message:
-        "远程部署文件夹(The folder where the deployment package is located)",
     },
   ]);
   const inputRes: Config = {
@@ -118,10 +121,10 @@ export default async function add() {
       port: res.port ? Number(res.port) : 22,
     },
     serverType: res.type,
-    releaseDir: res.releaseDir || res.name,
     name: res.name,
-    targetDir: res.targetDir,
+    targetDir: resolve(process.cwd(), "dist"),
     deployDir: res.deployDir,
+    build: res.build,
   };
   config.push(inputRes);
   writeConfig(config);

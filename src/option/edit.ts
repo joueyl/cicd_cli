@@ -2,6 +2,7 @@ import chalk from "chalk";
 import readConfig from "../common/readConfig";
 import writeConfig from "../common/writeConfig"
 import inquirer from "inquirer"
+import readPackage from "../common/readPackage";
 export default async function edit(name:string,key?:string) {
     const config = readConfig()
     if (!config.length) {
@@ -34,16 +35,17 @@ export default async function edit(name:string,key?:string) {
             type: 'list',
             name:'type',
             message:'请选择服务器类型(Server type)',
+            default:config[currentConfig].serverType,
             choices:['ssh','ftp'],
         },
         {
             type: 'input',
             name: 'host',
-            message: '请输入SSH地址(SSH address)',
+            message: '请输入服务器地址(server address)',
             default: config[currentConfig].server.host,
             validate(input, answers) {
                 if(!input){
-                    return '请输入SSH地址'
+                    return '请输入服务器地址'
                 }
                 return true
             },
@@ -51,7 +53,7 @@ export default async function edit(name:string,key?:string) {
         {
             type: 'input',
             name: 'port',
-            message: '请输入SSH端口(默认22)(SSH Port default is 22)',
+            message: '请输入服务器端口(默认22)(server Port default is 22)',
             default: config[currentConfig].server.port,
         },
         {
@@ -63,7 +65,7 @@ export default async function edit(name:string,key?:string) {
         {
             type:'password',
             name:'password',
-            message:'请输入服务器密码(SSH Password)',
+            message:'请输入服务器密码(server Password)',
             default: config[currentConfig].server.password,
             validate(input, answers) {
                 if(!input){
@@ -71,27 +73,42 @@ export default async function edit(name:string,key?:string) {
                 }
                 return true
             }
-        },{
+        },
+        {
             type:'input',
             name:'targetDir',
-            message:'本地项目打包文件夹(例:C:\\project\\dist)(The folder where the package file is located)',
+            message:'项目目录(例:C:\\project\\dist)(The folder where the package file is located)',
             validate(input, answers) {
                 if(!input){
-                    return '本地项目打包文件夹(The folder where the package file is located)'
+                    return '项目目录(The folder where the package file is located)'
+                }else{
+                    if(Object.keys(readPackage(input).scripts).length){
+                        return true
+                    }
+                    return '未找到项目script,请检查输入内容或scripts中是否有命令'
                 }
-                return true
             },
             default: config[currentConfig].targetDir,
             filter(input, answers) {
                 return input.replace(/\\/g, '/');
             },
-        },{
+        },
+        {
+            type:'list',
+            name:'build',
+            message:'请选择打包命令(build type)',
+            default:config[currentConfig].build,
+            choices:(answers)=>{
+                return Object.keys(readPackage(answers.targetDir).scripts)
+            },
+        },
+        {
             type:'input',
             name:'deployDir',
-            message:'远程部署目录(例:/home/www/)(The deployment directory on the server)',
+            message:'远程目录(例:/home/www/)(The deployment directory on the server)',
             validate(input, answers) {
                 if(!input){
-                    return '远程部署目录(例:/home/www/)(The deployment directory on the server)'
+                    return '远程目录(例:/home/www/)(The deployment directory on the server)'
                 }
                 return true
             },
@@ -99,13 +116,7 @@ export default async function edit(name:string,key?:string) {
                 return input.replace(/\\/g, '/');
             },
             default: config[currentConfig].deployDir
-        },{
-            type:'input',
-            name:'releaseDir',
-            default: config[currentConfig].releaseDir,
-            message:'远程部署文件夹(The folder where the deployment package is located)',
         }
-
     ])
     const inputRes:Config = {
         value: res.name,
@@ -116,7 +127,7 @@ export default async function edit(name:string,key?:string) {
             port: res.port ? Number(res.port) : 22
         },
         serverType:res.type,
-        releaseDir: res.releaseDir || res.name,
+        build:res.build,
         name: res.name,
         targetDir: res.targetDir,
         deployDir: res.deployDir

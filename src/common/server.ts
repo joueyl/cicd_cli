@@ -2,6 +2,7 @@ import http from 'node:http'
 import ejs from 'ejs'
 import fs from 'node:fs'
 import path from 'node:path'
+import api from '../api/index'
 export default function (){
     const server = http.createServer((req, res) => {
         if(req.url==='/'){
@@ -28,7 +29,7 @@ export default function (){
                  serveStaticFiles(req, res, path.resolve(process.cwd(),'./dist/view'));
             }
             if(req.url?.includes('api')){
-                
+                api(req, res)
             }
         }
     })

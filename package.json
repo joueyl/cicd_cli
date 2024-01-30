@@ -5,8 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsup --publicDir ./public &&node ./dist/index.js",
-    "start": "node ./dist/index.js",
+    "dev": "node ./dist/index.js",
+    "watch":"tsup",
+    "webUI": "nodemon ./dist/index.js webUI",
     "build": "tsup --publicDir ./public --minify",
     "postinstall": "node -e \"try{require('./postinstall')}catch(e){}\""
   },

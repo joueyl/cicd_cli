@@ -4,6 +4,7 @@ export default defineConfig({
     entry: ['src/index.ts'],
     format: 'esm',
     dts: true,
-    clean:true,
-    splitting: true
+    splitting: true,
+    watch: true,
+    publicDir: './public',
 })
