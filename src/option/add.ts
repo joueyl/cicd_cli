@@ -29,7 +29,7 @@ export default async function add() {
     {
       type: "input",
       name: "name",
-      message: "请输入项目名称(Project name)",
+      message: "项目名称(Project name)",
       validate: function (value) {
         // 使用正则表达式校验输入只包含英文字符
         if (/^[a-zA-Z0-9]+$/.test(value)) {
@@ -53,16 +53,16 @@ export default async function add() {
     {
       type: "list",
       name: "type",
-      message: "请选择服务器类型(Server type)",
+      message: "服务器类型(Server type)",
       choices: ["ssh", "ftp"],
     },
     {
       type: "input",
       name: "host",
-      message: "请输入服务器地址(Server address)",
+      message: "服务器地址(Server address)",
       validate(input, answers) {
         if (!input) {
-          return "请输入服务器地址";
+          return "服务器地址";
         }
         return true;
       },
@@ -71,7 +71,7 @@ export default async function add() {
       type: "input",
       name: "port",
       message:
-        "请输入服务器端口(SSH默认22,FTP默认21)(Server Port default is 21|22)",
+        "服务器端口(SSH默认22,FTP默认21)(Server Port default is 21|22)",
       default: function (answers: { type: string }) {
         if (answers.type == "ssh") {
           return 22;
@@ -82,12 +82,12 @@ export default async function add() {
     {
       type: "input",
       name: "username",
-      message: "请输入服务器用户名(默认root)(User name default is root)",
+      message: "服务器用户名(默认root)(User name default is root)",
     },
     {
       type: "password",
       name: "password",
-      message: "请输入服务器密码(Server Password)",
+      message: "服务器密码(Server Password)",
       mask: "*",
       validate(input, answers) {
         if (!input) {
@@ -122,7 +122,7 @@ export default async function add() {
     },
     serverType: res.type,
     name: res.name,
-    targetDir: resolve(process.cwd(), "dist"),
+    targetDir: resolve(process.cwd()),
     deployDir: res.deployDir,
     build: res.build,
   };

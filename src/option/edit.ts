@@ -18,7 +18,7 @@ export default async function edit(name:string,key?:string) {
         {
             type: 'input',
             name: 'name',
-            message: '请输入项目名称(Project name)',
+            message: '项目名称(Project name)',
             default: config[currentConfig].name,
             validate: function(value) {
                 // 使用正则表达式校验输入只包含英文字符
@@ -34,18 +34,18 @@ export default async function edit(name:string,key?:string) {
         {
             type: 'list',
             name:'type',
-            message:'请选择服务器类型(Server type)',
+            message:'服务器类型(Server type)',
             default:config[currentConfig].serverType,
             choices:['ssh','ftp'],
         },
         {
             type: 'input',
             name: 'host',
-            message: '请输入服务器地址(server address)',
+            message: '服务器地址(server address)',
             default: config[currentConfig].server.host,
             validate(input, answers) {
                 if(!input){
-                    return '请输入服务器地址'
+                    return '服务器地址'
                 }
                 return true
             },
@@ -53,19 +53,19 @@ export default async function edit(name:string,key?:string) {
         {
             type: 'input',
             name: 'port',
-            message: '请输入服务器端口(默认22)(server Port default is 22)',
+            message: '服务器端口(默认22)(server Port default is 22)',
             default: config[currentConfig].server.port,
         },
         {
             type:'input',
             name:'username',
-            message:'请输入服务器用户名(默认root)(User name default is root)',
+            message:'服务器用户名(默认root)(User name default is root)',
             default: config[currentConfig].server.username,
         },
         {
             type:'password',
             name:'password',
-            message:'请输入服务器密码(server Password)',
+            message:'服务器密码(server Password)',
             default: config[currentConfig].server.password,
             validate(input, answers) {
                 if(!input){

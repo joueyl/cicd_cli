@@ -93,9 +93,10 @@ function unZip(targetDir: string) {
 }
 function mvFile(deployDir:string){
     return new Promise((resolve, reject) => {
-        ssh.execCommand(`mv ${deployDir}/dist/* ${deployDir}/`).then((res) => {
-            if (res.stderr) {
+        ssh.execCommand(`rsync -av ${deployDir}/dist/ ${deployDir}/`).then((res) => {
+            if (!res.stderr) {
                 resolve(res.stderr);
+              console.log(chalk.green(`SSH 📂 文件移动成功`));
             }
         })
     })

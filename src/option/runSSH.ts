@@ -22,7 +22,6 @@ export default async function run(object:Config) {
             await ssh.deleteFile(object.deployDir+'/dist')
         }
         await ssh.putFile(path.resolve(object.targetDir,'./dist.zip'),object.deployDir)
-        const isExistProject = await ssh.checkFile(object.deployDir)
         await ssh.deleteFile(object.deployDir,true)
         const isUnzip = await ssh.unZip(object.deployDir)
         await ssh.mvFile(object.deployDir)

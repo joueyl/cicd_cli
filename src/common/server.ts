@@ -3,10 +3,11 @@ import ejs from 'ejs'
 import fs from 'node:fs'
 import path from 'node:path'
 import api from '../api/index'
+import { fileURLToPath } from 'node:url'
 export default function (){
     const server = http.createServer((req, res) => {
         if(req.url==='/'){
-            fs.readFile(path.resolve(process.cwd(),'./dist/view/index.html'), (err, data) => {
+            fs.readFile(path.relative(fileURLToPath(import.meta.url),'./dist/view/index.html'), (err, data) => {
              if(err){
                 console.log(err)
                 res.writeHead(500)
@@ -26,7 +27,7 @@ export default function (){
                 })
             }
             if(req.url?.includes('assets')){
-                 serveStaticFiles(req, res, path.resolve(process.cwd(),'./dist/view'));
+                 serveStaticFiles(req, res, path.relative(fileURLToPath(import.meta.url),'./dist/view'));
             }
             if(req.url?.includes('api')){
                 api(req, res)

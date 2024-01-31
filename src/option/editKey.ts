@@ -4,16 +4,17 @@ import writeConfig from "../common/writeConfig";
 import flattenObject from "../utils/flattenObject";
 import inquirer from "inquirer";
 const ConfigEnum:any = {
-  name: "请输入项目名称(Project name)",
+  name: "项目名称(Project name)",
+  build: "打包命令(例:build)(The command to build)",
   targetDir:
     "本地项目打包文件夹(例:C:\\project\\dist)(The folder where the package file is located)",
   deployDir:
     "远程部署目录(例:/home/www/)(The deployment directory on the server)",
   releaseDir:
     "远程部署文件夹(The folder where the deployment package is located)",
-  prot: "请输入服务器端口(默认22)(Server Port default is 22)",
-  username: "请输入服务器用户名(默认root)(User name default is root)",
-  password: "请输入服务器密码(Server Password)",
+  prot: "服务器端口(默认22)(Server Port default is 22)",
+  username: "服务器用户名(默认root)(User name default is root)",
+  password: "服务器密码(Server Password)",
   serverType: "服务器类型(Server type)",
   host: "服务器地址(Server host)",
 };

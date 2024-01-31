@@ -1,10 +1,10 @@
 import {defineConfig} from 'tsup'
 
 export default defineConfig({
-    entry: ['src/index.ts'],
+    entry: ['src/index.ts','src/init/init.ts'],
     format: 'esm',
     dts: true,
     splitting: true,
-    watch: true,
+    watch: false,
     publicDir: './public',
 })

@@ -12,12 +12,13 @@ import editKey from './option/editKey'
 import { readFile } from "fs/promises"; // 以promise的方式引入 readFile API
 import install from './option/install'
 import server from './common/server'
+import readPackage from './common/readPackage'
 const json = JSON.parse(
     await readFile(new URL('../package.json', import.meta.url)) as any
 )
 
 program.version(json.version)
-program.command('init').action(async () => {
+program.command('add').action(async () => {
    await add()
 }).description('添加一个项目').alias('a')
 program.command('remove [name]').action(async (name) => {
@@ -73,10 +74,13 @@ program.command('help').action(() => {
     program.outputHelp()
 }).description('查看帮助').alias('h')
 program.command('install').action(async() => {
+    const pkg = readPackage(process.cwd())
+    if(!pkg){
+        console.log(chalk.red("scd 🧐 无package.json文件,请在项目根目录运行项目"))
+    }
     await install(process.cwd())
-    console.log(process.cwd())
-}).description('执行项目初始化').alias('i')
+}).description('将自动化脚本安装到项目里').alias('i')
 program.command('webUI').action(() => {
     server()
-})
+}).description('启动webUI服务(正在开发中....)').alias('w')
 program.parse(process.argv)

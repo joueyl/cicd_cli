@@ -57,11 +57,13 @@ export default async function run(object: Config) {
     config = object;
     try {
       console.log(chalk.blue(`${object.name} ⏳ 开始打包`));
+      console.time("打包耗时");
       await build(path.resolve(object.targetDir), `npm run ${object.build}`);
       console.log(chalk.green(`${object.name} ✔ 打包完成`));
+      console.timeEnd("打包耗时");
       allSize = getFolderSize(path.resolve(config.targetDir,'dist'));
     } catch (error) {
-      console.log(chalk.red(`${object.name} ✘ 打包失败`));
+      console.log(chalk.red(`${object.name} ✘ 打包失败`),error);
       reject(chalk.red(`${object.name} ✘ 打包失败`));
     }
     try {
@@ -109,12 +111,12 @@ async function deleteFilesExcept(client:ftp.Client, dir:string, exceptFile:strin
                  await deleteFilesExcept(client, `${dir}/${file.name}`, exceptFile);
               } else {
                   // 删除文件
-                  console.log(`删除文件: ${file.name}`);
+                  console.log(chalk.red(`删除旧文件: ${file.name}`));
                   await client.cd(dir);
                   await client.remove(file.name);
               }
           }else{
-            console.log(`发现宝塔防跨站文件 ${file.name} 已进行规避`)
+            console.log(`发现白名单文件 ${file.name} 已进行规避`)
           }
       }
       if(!isRoot){
@@ -122,6 +124,6 @@ async function deleteFilesExcept(client:ftp.Client, dir:string, exceptFile:strin
        await client.removeDir(dir)
       }
   } catch (error) {
-      console.error("Error:", error);
+      process.exit(0)
   }
 }
