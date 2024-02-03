@@ -53,6 +53,7 @@ program.command('run [name]').action(async (name) => {
         console.log(chalk.red(`scd 🥵 ${name}配置不存在`))
         process.exit(0)
     }else{
+        console.log('-------------------------------------')
         await run(res)
     }
 }).description('运行项目或指定一个项目').alias('r')
@@ -74,6 +75,11 @@ program.command('help').action(() => {
     program.outputHelp()
 }).description('查看帮助').alias('h')
 program.command('install').action(async() => {
+    const config = readConfig()
+    if(!config.length){
+        console.log(chalk.red("scd 🧐 无配置项,请运行scd add去添加一个吧"))
+        process.exit(0)
+    }
     const pkg = readPackage(process.cwd())
     if(!pkg){
         console.log(chalk.red("scd 🧐 无package.json文件,请在项目根目录运行项目"))

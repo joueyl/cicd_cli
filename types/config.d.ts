@@ -12,6 +12,11 @@ interface Config {
         password:string
     }
 }
+interface User{
+    runNUM:number,
+    runSuccess:number
+    runError:number
+}
 const enum ConfigEnum {
     name = '请输入项目名称(Project name)',
     targetDir = '本地项目打包文件夹(例:C:\\project\\dist)(The folder where the package file is located)',

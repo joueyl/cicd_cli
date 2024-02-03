@@ -64,7 +64,6 @@ export default async function run(object: Config) {
       allSize = getFolderSize(path.resolve(config.targetDir,'dist'));
     } catch (error) {
       console.log(chalk.red(`${object.name} ✘ 打包失败`),error);
-      reject(chalk.red(`${object.name} ✘ 打包失败`));
     }
     try {
       await client.access({
@@ -96,7 +95,7 @@ export default async function run(object: Config) {
       console.log(
         chalk.red(`${object.name} 😅 上传失败请检查FTP配置或查看网络连接`, err)
       );
-      process.exit(0)
+      return
     }
   });
 }
@@ -124,6 +123,6 @@ async function deleteFilesExcept(client:ftp.Client, dir:string, exceptFile:strin
        await client.removeDir(dir)
       }
   } catch (error) {
-      process.exit(0)
+      process.exit(1)
   }
 }

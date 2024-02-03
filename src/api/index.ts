@@ -1,68 +1,101 @@
 import http from "node:http";
 import readConfig from "../common/readConfig";
-import runFTP from "../option/runFTP";
-import runSSH from "../option/runSSH";
+import querystring from "node:querystring";
+import readPackage from "../common/readPackage";
+import writeConfig from '../common/writeConfig'
+import {  spawn } from "node:child_process";
+import ws from "ws"
 export default async function (
   req: http.IncomingMessage,
   res: http.ServerResponse
 ) {
-  let query: { name?: string; value?: string } = {};
-  req.url
-    ?.split("?")[1]
-    ?.split("&")
-    .map((item) => {
-      const key = item.split("=")[0];
-      const value = item.split("=")[1];
-      return {
-        [key]: value,
-      };
-    })
-    .forEach((item) => {
-      query = { ...query, ...item };
-    });
+  const query = querystring.parse(req.url?.split("?")[1] || "");
+  const configs = readConfig();
+  let data = "";
   switch (req.url?.split("?")[0]) {
     case "/api/config":
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(readConfig()));
+      res.end(
+        JSON.stringify({
+          code: 1,
+          data: readConfig(),
+          msg: "获取成功",
+        })
+      );
       break;
-    case "/api/run":
+    case "/api/getBuildCommand":
       res.writeHead(200, { "Content-Type": "application/json" });
-      const config = readConfig().find((item) => item.name === query.name);
-      if (config) {
-        if (config.serverType === "ftp") {
-          try {
-            const result = await runFTP(config);
-            res.end(
-              JSON.stringify({
-                code: 200,
-                message: "运行成功",
-              })
-            );
-          } catch (error) {
-            res.writeHead(200, {
-              "Content-Type": "application/json",
-            });
-            res.end(JSON.stringify({ code: 500, message: error }));
-          }
-        }else{
-            try {
-                const result = await runSSH(config);
-                res.end(JSON.stringify(
-                    {
-                        code:200,
-                        message:"运行成功"
-                    }
-                ))
-            }catch (error) {
-                res.end(
-                    JSON.stringify({
-                        code: 500,
-                        message: error
-                    })
-                )
-            }
+      if (query.path) {
+        const packageJson = readPackage(query.path as string);
+        if (packageJson) {
+          res.end(
+            JSON.stringify({
+              code: 1,
+              data: packageJson.scripts,
+              msg: "获取成功",
+            })
+          );
+        } else {
+          res.end(JSON.stringify({ code: 0, message: "未找到package.json" }));
         }
+      } else {
+        res.end(JSON.stringify({ code: 0, msg: "请先填写本地项目路径" }));
       }
+
       break;
-  }
+    case "/api/editConfig":
+
+      req.once("data", (chunk: string) => {
+        data += chunk.toString();
+      });
+      req.once("end", () => {
+        const body = JSON.parse(data);
+        const index = configs.findIndex((item) => item.value === body.value);
+        if (index !== -1) {
+          configs[index] = body;
+          writeConfig(configs);
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ code: 1, msg: "编辑成功" }));
+        }else{
+            res.end(JSON.stringify({ code: 0, msg: "未找到对应配置" }));
+        }
+      });
+      break;
+    case "/api/delConfig":
+      req.once("data", (chunk: string) => {
+        data += chunk.toString();
+      })
+      req.once("end", ()=>{
+        const body = JSON.parse(data)
+        const index = configs.findIndex((item) => item.value === body.value&&item.name===body.name);
+        if(index<0){
+            res.end(JSON.stringify({ code: 0, msg: "未找到对应配置" }));
+        }else{
+            configs.splice(index,1)
+            writeConfig(configs)
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ code: 1, msg: "删除成功" }));
+        }
+      })
+      break;
+    case "/api/addConfig":
+        req.once("data", (chunk: string) => {
+          data += chunk.toString();
+        })
+        req.once("end", ()=>{
+          const body = JSON.parse(data)
+          const isExist = configs.find((item)=>{
+            item.name===body.name||item.value===body.value
+          })
+          if(isExist){
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ code: 0, msg: "配置已存在" }));
+          }else{
+            configs.push(body)
+            writeConfig(configs)
+            res.end(JSON.stringify({ code: 1, msg: "添加成功" }));
+          }
+        })
+      break;
+    }
 }
