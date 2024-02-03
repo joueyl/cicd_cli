@@ -6,7 +6,8 @@ import api from "../api/index";
 import { fileURLToPath } from "node:url";
 import { spawn } from "child_process";
 import {WebSocketServer} from "ws";
-import url from 'node:url'
+import url from 'node:url';
+import {countErrorNUM,countSuccessNUM} from '../common/count';
 export default function () {
   const server = http.createServer((req, res) => {
     if (req.url === "/") {
@@ -57,7 +58,7 @@ export default function () {
 
   wss.on('connection', (ws) => {
       ws.on('message', (message) => {
-         const child = spawn(`npm run dev run ${JSON.parse(message.toString()).name}`, { shell: true, cwd: process.cwd() });
+         const child = spawn(`scd run ${JSON.parse(message.toString()).name}`, { shell: true, cwd: process.cwd() });
           child.stdout.on('data', (data) => {
               ws.send(JSON.stringify({
                   code: 1,
@@ -70,6 +71,13 @@ export default function () {
                   data: code
               }));
               ws.close();
+          })
+          child.on('close', (code: number) => {
+            if(code){
+                countErrorNUM()
+            }else{
+                countSuccessNUM()
+            }
           })
       }); 
   }); 

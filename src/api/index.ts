@@ -3,8 +3,7 @@ import readConfig from "../common/readConfig";
 import querystring from "node:querystring";
 import readPackage from "../common/readPackage";
 import writeConfig from '../common/writeConfig'
-import {  spawn } from "node:child_process";
-import ws from "ws"
+import { readUser } from "../common/readUser";
 export default async function (
   req: http.IncomingMessage,
   res: http.ServerResponse
@@ -97,5 +96,8 @@ export default async function (
           }
         })
       break;
+    case '/api/getUser':
+      const user = readUser();
+      res.end(JSON.stringify({code: 1,data: user,msg:'获取成功'}))
     }
 }

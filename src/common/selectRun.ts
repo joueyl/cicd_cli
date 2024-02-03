@@ -6,11 +6,18 @@ export default async function selectRun(config:Config){
     countRunNUM()
     switch(config.serverType){
         case 'ssh':
-            runSSH(config)
+            runSSH(config).then(() => {
+                process.exit(0)
+            }).catch((error) => {
+                process.exit(1)
+            })
             break
         case 'ftp':
-          await runFTP(config)
-          countSuccessNUM()
+          await runFTP(config).then(() => {
+              process.exit(0)
+          }).catch((error) => {
+              process.exit(1)
+          })
             break
     }
 } 
