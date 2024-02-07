@@ -1,6 +1,6 @@
 {
   "name": "jouei-cicd",
-  "version": "2.1.7",
+  "version": "2.2.1",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -24,7 +24,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jouei/jouei-cicd.git"
+    "url": "git+https://github.com/joueyl/cicd_cli.git"
   },
   "devDependencies": {
     "@types/archiver": "^6.0.2",
