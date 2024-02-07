@@ -10,11 +10,13 @@ pnpm install jouei-cicd -g
 
 ## 获得帮助信息
 
-```
+``` cmd
 scd -h
+scd
 ```
 
 ## 添加项目
+添加项目必须要在项目的根目录执行
 
 ```cmd
 scd add
@@ -22,26 +24,31 @@ scd add
 
 
 
-![https://s11.ax1x.com/2024/01/19/pFA7sjU.png](https://s11.ax1x.com/2024/01/19/pFA7sjU.png)
+![https://pic.imgdb.cn/item/65c2f9f39f345e8d03196cc9.png](https://pic.imgdb.cn/item/65c2f9f39f345e8d03196cc9.png)
 
 ## 注意事项
-
-#### 请严格按照示例的路径格式填写
-
-#### 服务器最后上传路径
-
-```cmd
-? 远程部署目录(例:/home/www/)(The deployment directory on the server) /www/wwwroot/
-? 远程部署文件夹(The folder where the deployment package is located) CICD_project
-```
-
-上传到服务的目录是这两个拼接起来的即`/www/wwwroot/CICD_project`,这么做的方式主要是为了区分每个项目，避免项目直接文件夹重复，部署文件夹是一个可选值，即默认值是`项目名称`
 
 #### 打包项目产出
 
 项目的打包文件输出必须为dist文件夹(vite默认)
 
 ## 项目配置
+
+### 自动配置
+
+在想要使用自动化的目录执行
+
+```cmd
+scd install
+```
+
+选择对应项目将自动配置并开启自动化
+
+![](https://pic.imgdb.cn/item/65c2fb419f345e8d031c6c0d.png)
+
+
+
+### 手动配置
 
 实现自动化的方式是使用`git hook`,使用钩子去自动运行自动化脚本
 
