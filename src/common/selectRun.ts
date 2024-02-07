@@ -2,6 +2,7 @@ import runSSH from '../option/runSSH'
 import runFTP from '../option/runFTP'
 import { countRunNUM } from './count'
 import { countSuccessNUM } from './count'
+import type{Config} from '../../types/config'
 export default async function selectRun(config:Config){
     countRunNUM()
     switch(config.serverType){

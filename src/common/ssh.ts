@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import { NodeSSH } from "node-ssh";
 import whitelistFile from "../utils/whitelistFile";
+import { Config } from "../../types/config";
 const ssh = new NodeSSH();
 function connect(object: Config) {
   return new Promise(async (resolve, reject) => {

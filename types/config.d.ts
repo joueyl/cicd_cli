@@ -1,4 +1,4 @@
-interface Config {
+export interface Config {
     name: string
     value: string
     targetDir:string
@@ -12,7 +12,7 @@ interface Config {
         password:string
     }
 }
-interface User{
+export interface User{
     runNUM:number,
     runSuccess:number
     runError:number
@@ -27,4 +27,4 @@ const enum ConfigEnum {
     username='请输入服务器用户名(默认root)(User name default is root)',
     password='请输入服务器密码(SSH Password)',
     host = 'host'
-}
+} 

@@ -5,6 +5,7 @@ import tableLog from "../common/table";
 import chalk from "chalk";
 import readPackage from "../common/readPackage";
 import { resolve } from "path";
+import { Config } from "../../types/config";
 /**
  * 添加配置
  */

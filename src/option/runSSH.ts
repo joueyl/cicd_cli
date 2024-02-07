@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import {zipFile} from '../common/FileProcessing'
 import ssh from '../common/ssh'
 import fs from 'node:fs' 
+import { Config } from '../../types/config'
 export default async function run(object:Config) {
     return new Promise<string|boolean>(async (resolve, reject) => {
         try {

@@ -3,6 +3,7 @@ import readConfig from "../common/readConfig";
 import writeConfig from "../common/writeConfig"
 import inquirer from "inquirer"
 import readPackage from "../common/readPackage";
+import { Config } from "../../types/config";
 export default async function edit(name:string,key?:string) {
     const config = readConfig()
     if (!config.length) {

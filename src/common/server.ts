@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path, { dirname } from "node:path";
 import api from "../api/index";
 import { fileURLToPath } from "node:url";
-import { spawn } from "child_process";
+import { exec, spawn } from "child_process";
 import {WebSocketServer} from "ws";
 import url from 'node:url';
 import {countErrorNUM,countSuccessNUM} from '../common/count';
@@ -114,13 +114,13 @@ export default function () {
     }
 
     // 执行命令
-    // exec(command, (error) => {
-    //   if (error) {
-    //     console.error(`Could not open the URL: ${error}`);
-    //     return;
-    //   }
-    // });
-    console.log("webUI目前仅做展示作用,功能暂未开发");
+    exec(command, (error) => {
+      if (error) {
+        console.error(`Could not open the URL: ${error}`);
+        return;
+      }
+    });
+    // console.log("webUI目前仅做展示作用,功能暂未开发");
   });
 }
 function serveStaticFiles(

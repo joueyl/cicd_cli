@@ -5,6 +5,7 @@ import path from "node:path";
 import fs from "node:fs";
 import * as progress from "cli-progress";
 import whitelistFile from "../utils/whitelistFile";
+import { Config } from "../../types/config";
 /**
  * 获取文件夹大小
  * @param folderPath 文件夹路径

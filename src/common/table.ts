@@ -1,4 +1,5 @@
 import Table, { Cell } from "cli-table3";
+import { Config } from "../../types/config";
 export default function tableLog(data: Config[]) {
   const table = new Table({
     chars: {

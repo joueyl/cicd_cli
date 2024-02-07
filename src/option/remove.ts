@@ -3,6 +3,7 @@ import readConfig from "../common/readConfig";
 import writeConfig from "../common/writeConfig";
 import chalk from "chalk";
 import tableLog from "../common/table";
+import { Config } from "../../types/config";
 export default async function remove(name: string) {
   const config = readConfig();
   if (!config.find((res) => res.name === name)) {
