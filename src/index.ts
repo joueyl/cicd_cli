@@ -83,6 +83,7 @@ program.command('install').action(async() => {
     const pkg = readPackage(process.cwd())
     if(!pkg){
         console.log(chalk.red("scd 🧐 无package.json文件,请在项目根目录运行项目"))
+        process.exit(0)
     }
     await install(process.cwd())
 }).description('将自动化脚本安装到项目里').alias('i')
