@@ -74,9 +74,9 @@ export default function () {
           })
           child.on('close', (code: number) => {
             if(code){
-                countErrorNUM()
+                // countErrorNUM()
             }else{
-                countSuccessNUM()
+                // countSuccessNUM()
             }
           })
       }); 
