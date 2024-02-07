@@ -22,6 +22,10 @@
   ],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jouei/jouei-cicd.git"
+  },
   "devDependencies": {
     "@types/archiver": "^6.0.2",
     "@types/cli-progress": "^3.11.5",
