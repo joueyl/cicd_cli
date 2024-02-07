@@ -7,4 +7,5 @@ export default defineConfig({
     splitting: true,
     watch: false,
     publicDir: './public',
+    clean: true,
 })
