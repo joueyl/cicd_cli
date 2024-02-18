@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { exec, spawn } from "child_process";
 import {WebSocketServer} from "ws";
 import url from 'node:url';
-import {countErrorNUM,countSuccessNUM} from '../common/count';
+import writeLog from './writeLog'
 export default function () {
   const server = http.createServer((req, res) => {
     if (req.url === "/") {
@@ -59,25 +59,30 @@ export default function () {
   wss.on('connection', (ws) => {
       ws.on('message', (message) => {
          const child = spawn(`scd run ${JSON.parse(message.toString()).name}`, { shell: true, cwd: process.cwd() });
+         writeLog('开始运行 '+JSON.parse(message.toString()).name)
           child.stdout.on('data', (data) => {
               ws.send(JSON.stringify({
                   code: 1,
                   data: data.toString()
               }));
+              writeLog(data.toString().replace(/[\r\n]+/g, ''))
           })
           child.stderr.on('close', (code: number) => {
-              ws.send(JSON.stringify({
-                  code: 0,
-                  data: code
-              }));
-              ws.close();
+              writeLog('运行结束 '+JSON.parse(message.toString()).name)
           })
           child.on('close', (code: number) => {
             if(code){
-                // countErrorNUM()
+              ws.send(JSON.stringify({
+                  code: 0,
+                  data:'部署失败'
+              }))
             }else{
-                // countSuccessNUM()
+              ws.send(JSON.stringify({
+                  code: 2,
+                  data:'部署成功'
+              }))
             }
+            ws.close()
           })
       }); 
   }); 

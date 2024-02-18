@@ -4,6 +4,7 @@ import querystring from "node:querystring";
 import readPackage from "../common/readPackage";
 import writeConfig from '../common/writeConfig'
 import { readUser } from "../common/readUser";
+import readLog from "../common/readLog";
 export default async function (
   req: http.IncomingMessage,
   res: http.ServerResponse
@@ -99,5 +100,11 @@ export default async function (
     case '/api/getUser':
       const user = readUser();
       res.end(JSON.stringify({code: 1,data: user,msg:'获取成功'}))
+      break
+    case '/api/log':
+      const logs = readLog()
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ code: 1, data: logs, msg: "获取成功" }));
+      break;
     }
 }
