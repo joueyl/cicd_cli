@@ -58,13 +58,14 @@ export default async function run(object: Config) {
     config = object;
     try {
       console.log(chalk.blue(`${object.name} ⏳ 开始打包`));
-      console.time("打包耗时");
+      console.time("执行耗时");
       await build(path.resolve(object.targetDir), `npm run ${object.build}`);
       console.log(chalk.green(`${object.name} ✔ 打包完成`));
-      console.timeEnd("打包耗时");
+      console.timeEnd("执行耗时");
       allSize = getFolderSize(path.resolve(config.targetDir,'dist'));
     } catch (error) {
-      console.log(chalk.red(`${object.name} ✘ 打包失败`),error);
+      console.log(chalk.red(`${object.name} ✘ 打包失败`));
+      reject()
     }
     try {
       await client.access({

@@ -16,7 +16,7 @@ import readPackage from './common/readPackage'
 const json = JSON.parse(
     await readFile(new URL('../package.json', import.meta.url)) as any
 )
-
+program.usage('scd [command] [object] [key]')
 program.version(json.version)
 program.command('add').action(async () => {
    await add()
