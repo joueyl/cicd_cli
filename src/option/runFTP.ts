@@ -125,6 +125,7 @@ async function deleteFilesExcept(client:ftp.Client, dir:string, exceptFile:strin
        await client.removeDir(dir)
       }
   } catch (error) {
+      console.log(error);
       process.exit(1)
   }
 }

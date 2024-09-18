@@ -1,1 +1,1 @@
-export default ['.user.ini']
+export default ['.user.ini',".well-known"]
